@@ -30,18 +30,12 @@ public class SearchEmployeeService {
 	 * @param companyId
 	 * @return
 	 */
-	public Map<Company, List<Employee>> searchEmployeesExtend(Integer id, String firstName, String lastName,
+	public List<Employee> searchEmployeesExtend(Integer id, String firstName, String lastName,
 			String companyName, Integer companyId) {
 
 		// Perform extended employee search based on the provided parameters
 		List<Employee> employees= employeeRepository.searchEmployeesExtended(id, firstName, lastName, companyName, companyId);
-
-		// Organize the employees by company in a map
-		Map<Company, List<Employee>> employeesByCompany = new HashMap<>();
-		for (Employee employee : employees) {
-			employeesByCompany.computeIfAbsent(employee.getCompany(), k -> new ArrayList<>()).add(employee);
-		}
-		return employeesByCompany;
+		return employees;
 	}
 	/**
 	 *  To search employees by any of the "Employee" table fields 

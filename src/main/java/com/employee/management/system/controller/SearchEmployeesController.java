@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.employee.management.system.exceptions.ResourceNotFoundException;
 import com.employee.management.system.resource.Company;
 import com.employee.management.system.resource.Employee;
 import com.employee.management.system.service.SearchEmployeeService;
@@ -37,13 +38,16 @@ public class SearchEmployeesController {
 	 * @return the map of employees grouped by company
 	 */
 	@GetMapping("/search-extend")
-	public Map<Company, List<Employee>> searchEmployeesExtended(@RequestParam(required = false) Integer id,
+	public List<Employee> searchEmployeesExtended(@RequestParam(required = false) Integer id,
 			@RequestParam(required = false) String firstName,
 			@RequestParam(required = false) String lastName,
 			@RequestParam(required = false) String companyName,
 			@RequestParam(required = false) Integer companyId) {
 
-		return searchEmployeeService.searchEmployeesExtend(id,firstName,lastName,companyName,companyId);
+		List<Employee> employeeList = searchEmployeeService.searchEmployeesExtend(id,firstName,lastName,companyName,companyId);
+		if(employeeList.isEmpty())
+			throw new ResourceNotFoundException("No results found for the search data");
+		return employeeList;
 	}
 
 	/**
@@ -58,8 +62,10 @@ public class SearchEmployeesController {
 			@RequestParam(required = false) String firstName,
 			@RequestParam(required = false) String lastName) {
 
-		return searchEmployeeService.searchEmployees(id,firstName,lastName);
-		
+		List<Employee> searchList = searchEmployeeService.searchEmployees(id,firstName,lastName);
+		if(searchList.isEmpty())
+			throw new ResourceNotFoundException("No results found for the search data");
+		return searchList;
 	}
 
 }

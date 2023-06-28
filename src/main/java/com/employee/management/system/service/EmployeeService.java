@@ -33,12 +33,11 @@ public class EmployeeService {
 	 */
 	public List<Employee> findAll() {
 		List<Employee> employeeList = employeeRepository.findAll();
-		if(employeeList.isEmpty()) 
-			throw new TableDataEmptyException("No employees in database");
 		return employeeList;
 	}
 
 	public void deleteById(int id) {
+		employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee ID does not exist in database"));
 		employeeRepository.deleteById(id);
 	}
 	/**
@@ -52,11 +51,6 @@ public class EmployeeService {
 		Integer companyId = employee.getCompany().getId();
 		Company company = companyRepository.findById(companyId).orElseThrow(() -> new ResourceNotFoundException("Company not found"));
 		employee.setCompany(company);
-
 		return employeeRepository.save(employee);
 	}
-
-
-
-
 }

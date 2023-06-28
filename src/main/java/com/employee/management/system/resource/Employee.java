@@ -24,7 +24,6 @@ public class Employee {
 	@Column(name = "first_name")
 	@Pattern(regexp = "^[A-Za-z' -]+$", message = "Invalid first name")
 	private String firstName;
-	@Size(min = 2, message = "Name should be atleast 2 characters")
 	@Pattern(regexp = "^[A-Za-z' -]+$", message = "Invalid last name")
 	@Column(name = "last_name")
 	private String lastName;
@@ -32,6 +31,18 @@ public class Employee {
 	@ManyToOne
 	@JoinColumn(name = "company_id")
 	private Company company;
+
+	public Employee() {
+
+	}
+	public Employee(int id, @Pattern(regexp = "^[A-Za-z' -]+$", message = "Invalid first name") String firstName,
+			@Pattern(regexp = "^[A-Za-z' -]+$", message = "Invalid last name") String lastName, Company company) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.company = company;
+	}
 
 	public int getId() {
 		return id;
